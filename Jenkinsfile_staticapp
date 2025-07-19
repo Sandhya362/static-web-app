@@ -10,9 +10,9 @@ stage('deploy'){
 steps {
 sshagent(['Nginx']) {
    sh"""
-     ssh -o StrictHostKeyChecking=no ec2-user@172.31.5.156 sudo rm -rf /usr/share/nginx/html/* "
-      scp -o StrictHostKeyChecking=no -r * ec2-user@172.31.5.156:/usr/share/nginx/html/ "
-     sleep 10 "
+     ssh -o StrictHostKeyChecking=no ec2-user@172.31.5.156 'sudo rm -rf /usr/share/nginx/html/*'
+      scp -o StrictHostKeyChecking=no -r * ec2-user@172.31.5.156:/usr/share/nginx/html/ 
+     sleep 10 
      ssh -o StrictHostKeyChecking=no ec2-user@172.31.5.156 'sudo systemctl restart nginx'
 """
 }
