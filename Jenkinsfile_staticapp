@@ -1,0 +1,49 @@
+pipeline {
+agent any
+stages {
+stage('git check out'){
+steps {
+Checkout scm
+}
+}
+stage('deploy'){
+steps {
+sshagent(['Nginx']) {
+   sh"""
+     ssh -o StrictHostKeyChecking=no ec2-user@65.2.73.33 sudo rm -rf /usr/share/nginx/html/* "
+      scp -o StrictHostKeyChecking=no -r static-web-app/* /usr/share/nginx/html/ "
+     sleep 10 "
+     ssh ec2-user@65.2.73.33 sudo systemctl restart nginx "
+"""
+}
+}
+}
+}
+ post {
+        always {
+            cleanWs()
+        }
+        success {
+          sendEmail(
+           "${env.JOB_NAME} - ${env.BUILD_NUMBER} - Build SUCCESS",
+           "Build SUCCESS. Please check the console output at ${env.BUILD_URL}",
+           'balajireddy.urs@gmail.com' )
+        }
+        failure {    
+         sendEmail(
+           "${env.JOB_NAME} - ${env.BUILD_NUMBER} - Build FAILED",
+           "Build FAILED. Please check the console output at ${env.BUILD_URL}",
+           'balajireddy.urs@gmail.com' )
+        }
+    }
+}
+
+def sendEmail(String subject, String body, String recipient) {
+    emailext(
+        subject: subject,
+        body: body,
+        to: recipient,
+        mimeType: 'text/html'
+    )
+}
+
