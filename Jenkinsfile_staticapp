@@ -27,13 +27,13 @@ sshagent(['Nginx']) {
           sendEmail(
            "${env.JOB_NAME} - ${env.BUILD_NUMBER} - Build SUCCESS",
            "Build SUCCESS. Please check the console output at ${env.BUILD_URL}",
-           'balajireddy.urs@gmail.com' )
+           'kalikirisandhya@gmail.com' )
         }
         failure {    
          sendEmail(
            "${env.JOB_NAME} - ${env.BUILD_NUMBER} - Build FAILED",
            "Build FAILED. Please check the console output at ${env.BUILD_URL}",
-           'balajireddy.urs@gmail.com' )
+           'kalikirisandhya@gmail.com' )
         }
     }
 }
