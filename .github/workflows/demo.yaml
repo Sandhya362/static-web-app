@@ -1,0 +1,14 @@
+name: githubactions demo
+on:
+    push:
+        branches:
+         - main
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+        - name: first
+          run: echo "hi"
+        - name: second
+          run: echo "ls"
+    
